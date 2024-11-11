@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #850fbb73;
+            /* Синий фон */
+            font-family: Arial, sans-serif;
+            color: rgb(180, 12, 12);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            flex-direction: column;
+            text-align: center;
+            overflow: hidden;
+            /* Скрыть лишние элементы */
+        }
+
+        .gift-box {
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            /* Вертикальное расположение */
+            align-items: center;
+            /* Центрирование по горизонтали */
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .gift-box:hover {
+            transform: scale(1.05);
+        }
+
+        .text {
+            font-size: 24px;
+            font-weight: bold;
+            color: rgb(214, 12, 12);
+            margin-top: 10px;
+            /* Отступ сверху */
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .cake-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #850fbb73;
+        }
+
+        .cake {
+            width: 300px;
+            /* Увеличена ширина изображения торта в 3 раза */
+            height: auto;
+            /* Автоматическая высота для сохранения пропорций */
+            margin: 20px 0;
+            position: relative;
+            /* Для позиционирования свечи */
+        }
+
+        .candle {
+            width: 30px;
+            /* Ширина изображения свечи */
+            height: auto;
+            /* Автоматическая высота для сохранения пропорций */
+            position: absolute;
+            top: 150px;
+            /* Попробуйте изменить это значение для точного позиционирования */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .flame {
+            width: 12px;
+            /* Уменьшенная ширина */
+            height: 50px;
+            /* Увеличенная высота */
+            position: absolute;
+            top: 120px;
+            /* Позиция над свечой */
+            left: 50%;
+            transform: translateX(-50%) scaleY(0.9);
+            /* Центрирование и небольшое уменьшение по оси Y */
+            background-image: url('./assets/flame.webp');
+            /* Замените на путь к вашему изображению */
+            background-size: contain;
+            /* Сохранение пропорций изображения */
+            background-repeat: no-repeat;
+            /* Изображение не повторяется */
+            animation: flicker 0.1s infinite alternate;
+            /* Анимация мерцания */
+        }
+
+        @keyframes flicker {
+            0% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(-50%) scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        .message {
+            font-size: 36px;
+            margin-top: 20px;
+            color: red;
+            /* Красный цвет надписи */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+            position: relative;
+            display: inline-block;
+            text-align: center; /* Центрирование текста */
+        }
+
+        .balloon {
+            position: absolute;
+            bottom: -50px;
+            /* Начальная позиция ниже экрана */
+            width: 30px;
+            height: 40px;
+            background-color: #ffcc00;
+            /* Цвет шарика */
+            border-radius: 15px;
+            animation: float 5s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-150vh);
+                /* Двигаться выше экрана */
+                opacity: 0;
+            }
+        }
+
+        .blow-message {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+
+        .blur {
+            filter: blur(10px);
+            transition: filter 0.5s ease;
+        }
+
+        #birthday-image {
+            width: 80%;
+            /* Ширина 80% от родительского контейнера */
+            max-width: 600px;
+            /* Максимальная ширина 600 пикселей */
+            height: auto;
+            /* Автоматическая высота для сохранения пропорций */
+            display: none;
+            /* Скрыто по умолчанию */
+            position: absolute;
+            /* Позволяет позиционировать изображение */
+            top: 50%;
+            /* Центрирование по вертикали */
+            left: 50%;
+            /* Центрирование по горизонтали */
+            transform: translate(-50%, -50%);
+            /* Центрирование */
+        }
+
+        #birthday-message {
+            font-size: 20px;
+            /* Размер шрифта */
+            color: white;
+            /* Цвет текста */
+            text-align: center;
+            /* Центрирование текста */
+            position: absolute;
+            /* Позволяет позиционировать текст */
+            top: 10%;
+            /* Начальная позиция текста */
+            left: 50%;
+            /* Центрирование по горизонтали */
+            transform: translateX(-50%);
+            /* Центрирование */
+            opacity: 0;
+            /* Начальная прозрачность */
+            transition: transform 2s ease, opacity 2s ease;
+            /* Плавная анимация */
+            max-width: 90%;
+            /* Ограничение ширины */
+            padding: 10px;
+            /* Отступы вокруг текста */
+            box-sizing: border-box;
+            /* Учитывать отступы в ширине */
+            overflow: hidden;
+            /* Скрыть переполнение */
+            white-space: normal;
+            /* Позволяет переносить текст */
+            word-wrap: break-word;
+            /* Переносить слова при необходимости */
+        }
+    </style>
+</head>
+
+<body>
+    <audio id="birthday-audio" src="./assets/happyBday.wav" preload="auto"></audio>
+    <audio id="applause-audio" src="./assets/applause.wav" preload="auto"></audio>
+    <div class="gift-box" id="gift-box">
+        <img src="./assets/gift.webp" alt="gift" style="width: 100%; height: auto; border-radius: 10px;">
+        <div class="text">Click Me</div>
+    </div>
+
+    <div class="cake-container" id="cake-container">
+        <div class="message" id="message">
+            <span>HAPPY BDAY</span>
+            <span>VLAD!!!</span>
+        </div>
+        <img src="./assets/cake.webp" alt="cake" class="cake">
+        <img src="./assets/candle.webp" alt="candle" class="candle" id="candle"> <!-- Изображение свечи -->
+        <div class="flame" id="flame"></div> <!-- Огонёк с изображением -->
+        <div class="blow-message">Allow to the microphone,<br> make a wish and...<br> blow into the speaker ;)</div>
+    </div>
+
+    <img src="./assets/Bday.jpg" alt="Birthday Celebration" id="birthday-image" class="hidden"
+        style="width: 100%; height: auto;">
+    <div id="birthday-message"></div>
+
+    <script>
+        const giftBox = document.getElementById('gift-box');
+        const cakeContainer = document.getElementById('cake-container');
+        const candle = document.getElementById('candle');
+        const flame = document.getElementById('flame');
+        const message = document.getElementById('message');
+
+        const balloonImages = [
+            'assets/1.webp',
+            'assets/2.webp',
+            'assets/3.webp',
+            'assets/4.webp',
+            'assets/5.webp',
+            'assets/6.webp',
+            'assets/7.webp',
+            'assets/8.webp',
+            'assets/9.webp',
+            'assets/10.webp',
+            'assets/11.webp',
+        ];
+
+        const birthdayAudio = document.getElementById('birthday-audio');
+        giftBox.addEventListener('click', () => {
+            giftBox.classList.add('hidden');
+            cakeContainer.style.display = 'flex';
+            birthdayAudio.play(); // Воспроизводим музыку
+            openMic();
+            createBalloons();
+            animateMessage();
+        });
+
+        function openMic() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const analyser = audioContext.createAnalyser();
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    const microphone = audioContext.createMediaStreamSource(stream);
+                    microphone.connect(analyser);
+                    analyser.fftSize = 2048;
+                    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+                    const applauseAudio = document.getElementById('applause-audio');
+                    function detectBlow() {
+                        analyser.getByteFrequencyData(dataArray);
+                        const soundLevel = dataArray.reduce((a, b) => a + b) / dataArray.length;
+                        if (soundLevel > 50) {
+                            candle.style.opacity = '0';
+                            flame.style.display = 'none';
+                            birthdayAudio.pause(); // Останавливаем музыку
+                            birthdayAudio.currentTime = 0; // Сбрасываем время воспроизведения
+                            applauseAudio.play(); // Воспроизводим музыку аплодисментов
+                            setTimeout(() => {
+                                candle.style.display = 'none';
+                                cakeContainer.classList.add('blur');
+                                const birthdayImage = document.getElementById('birthday-image');
+                                birthdayImage.style.display = 'block';
+
+                                // Вызов функции для показа поздравительного сообщения
+                                showBirthdayMessage();
+                            }, 500);
+                        }
+                        requestAnimationFrame(detectBlow);
+                    }
+                    detectBlow();
+                });
+        }
+
+        function createBalloons() {
+            for (let i = 0; i < 10; i++) {
+                const balloon = document.createElement('img');
+                balloon.className = 'balloon';
+                balloon.src = balloonImages[Math.floor(Math.random() * balloonImages.length)];
+                balloon.style.left = Math.random() * 100 + 'vw';
+                balloon.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                document.body.appendChild(balloon);
+            }
+        }
+
+        function animateMessage() {
+            const messageText = "HAPPY BDAY VLAD!!!";
+            const letters = messageText.split('').map(letter => letter === ' ' ? '\u00A0' : letter);
+            message.innerHTML = '';
+
+            letters.forEach((letter, index) => {
+                const span = document.createElement('span');
+                span.innerText = letter;
+                span.style.position = 'relative';
+                span.style.display = 'inline-block';
+                span.style.transition = 'transform 0.5s ease-out';
+                span.style.opacity = '0';
+
+                message.appendChild(span);
+
+                setTimeout(() => {
+                    span.style.transform = 'translateY(-50px)';
+                    span.style.opacity = '1';
+                }, index * 200);
+            });
+        }
+
+        function showBirthdayMessage() {
+            const birthdayMessage = document.getElementById('birthday-message');
+            birthdayMessage.innerHTML = "There is a whole world of possibilities open before you,<br> so may success smile upon you in all your endeavors and may your dreams come true.<br> Be happy. Happy Birthday!";
+            birthdayMessage.style.opacity = 1; // Убедитесь, что текст полностью виден
+        }
+
+    </script>
+</body>
+
+</html>
